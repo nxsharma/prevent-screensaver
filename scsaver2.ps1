@@ -4,7 +4,7 @@ $line   = 60   # dots/line
 # uses techniques from https://gist.github.com/MatthewSteeples/ce7114b4d3488fc49b6a
 
 $sw = [System.Diagnostics.Stopwatch]::StartNew()
-$ws = New-Object -com "Wscript.Shell"
+$WShell = New-Object -ComObject WScript.Shell
 
 while ( $true ) {
 
@@ -15,27 +15,29 @@ while ( $true ) {
   # [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($x, $y)
   
   # toggle scroll lock
-  $WShell.sendkeys( "{SCROLLLOCK}" )
-  Start-Sleep -Milliseconds 100
-  $WShell.sendkeys( "{SCROLLLOCK}" )
+  $WShell.sendkeys( "{SCROLLLOCK 2}" )
+  #Start-Sleep -Milliseconds 100
+  #$WShell.sendkeys( "{SCROLLLOCK}" )
   Start-Sleep -Seconds $sleep
   
   # dot 
-  write-host '.' -NoNewline
+  #write-host '.' -NoNewline
+  [Console]::Write('.')
+  
   $Count++
   # newline ?
-  if ( -not ( $count % $line ) ) {
-    write-host
-  } 
+  if ($Count % $line -eq 0) {
+     Write-Output ''
+  }
   
-  Start-Sleep $sleep
+  #Start-Sleep $sleep
   
   # exit on keypress
-  if ( [Console]::KeyAvailable ) { 
-    $keypress = [Console]::ReadKey($true)  # clear the key press
-    Write-Host
-    $sw.stop()
-    Write-Host "Elapsed $([int]$sw.Elapsed.TotalSeconds) seconds"
-    break
-  }
+    if ($host.UI.RawUI.KeyAvailable) {
+        $keypress = [Console]::ReadKey($true)  # Clear the key press
+        Write-Host
+        $sw.Stop()
+        Write-Host "Elapsed $([int]$sw.Elapsed.TotalSeconds) seconds"
+        break
+    }
 }
