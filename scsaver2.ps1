@@ -1,12 +1,14 @@
 # Simulate user activity to keep session active
-$sleep  = 2    # sleep time, seconds
+$sleep  = 5    # sleep time, seconds
 $line   = 60   # dots/line
 # uses techniques from https://gist.github.com/MatthewSteeples/ce7114b4d3488fc49b6a
 
 $sw = [System.Diagnostics.Stopwatch]::StartNew()
 $WShell = New-Object -ComObject WScript.Shell
 
+
 while ( $true ) {
+
 
   # # move mouse - DOESN'T WORK
   # $Pos = [System.Windows.Forms.Cursor]::Position
